@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sv="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    >
+
+
+    <TextView
+        android:id="@+id/tv_year"
+        android:layout_width="match_parent"
+        android:text="年"
+        android:layout_height="wrap_content"/>
+    <view.SelectView
+        android:id="@+id/sv_year"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        sv:isCanvasLine="true"
+        sv:textColor="#e4e4e4"
+        sv:textSize="14dp"/>
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/tv_month"
+
+        android:layout_width="match_parent"
+        android:text="月"
+        android:layout_height="wrap_content"/>
+    <view.SelectView
+        android:id="@+id/sv_month"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        sv:isCanvasLine="false"
+        sv:textSize="14dp"
+        sv:unitLongLine="1"
+        sv:unitSize="60dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:text="关系"
+        android:id="@+id/tv_relation"
+        android:layout_marginTop="10dp"
+
+        android:layout_height="wrap_content"/>
+
+    <view.SelectView
+        android:id="@+id/sv_relation"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        sv:isCanvasLine="false"
+        sv:textSize="14dp"
+        sv:unitLongLine="1"
+        sv:unitSize="60dp"/>
+
+
+
+</LinearLayout>
