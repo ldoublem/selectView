@@ -28,15 +28,15 @@ import java.util.List;
 public class SelectView extends View {
 
 
-    private Paint mPaint;
-    private Paint mPaintRed;
+    private Paint mPaint;//背景刻度画笔
+    private Paint mPaintRed;//中间刻度画笔
 
-    private Paint mPaintText;
+    private Paint mPaintText;//文字画笔
     private float mTextSize = 0;
     private float mPointX = 0f;
     private float mPointXoff = 0f;
     private int mPadding = dip2px(1);
-    private OverScroller scroller;
+    private OverScroller scroller;//控制滑动
     private VelocityTracker velocityTracker;
 
     private float mUnit = 50;
@@ -121,7 +121,7 @@ public class SelectView extends View {
     }
 
 
-    private void canvasBg(Canvas canvas) {
+    private void canvasBg(Canvas canvas) {//画圆角矩形
         RectF rectF = new RectF();
         rectF.top = mPadding;
         rectF.left = mPadding;
@@ -131,7 +131,7 @@ public class SelectView extends View {
 
     }
 
-    private void canvasRedLine(Canvas canvas) {
+    private void canvasRedLine(Canvas canvas) {//中间红色刻度
         Path pathRed = new Path();
         pathRed.moveTo(getMeasuredWidth() / 2, getMeasuredHeight() - mPadding);
         pathRed.lineTo(getMeasuredWidth() / 2, getMeasuredHeight() * 2 / 3);
@@ -144,13 +144,13 @@ public class SelectView extends View {
         for (int i = mMinValue; i <= mMaxValue; i++) {
             int space = mMiddleValue - i;
             float x = getMeasuredWidth() / 2 - space * mUnit + mPointX;
-            if (x > mPadding && x < getMeasuredWidth() - mPadding) {
+            if (x > mPadding && x < getMeasuredWidth() - mPadding) {//判断x轴在视图范围内
 
                 float y = getMeasuredHeight() / 2;
-                if (i % mUnitLongLine == 0) {
+                if (i % mUnitLongLine == 0) {//画长刻度线 默认每5格一个
 
                     mPaintText.setColor(textColor);
-                    if (Math.abs(mMiddleValue - current - i) < (mUnitLongLine / 2 + 1)) {
+                    if (Math.abs(mMiddleValue - current - i) < (mUnitLongLine / 2 + 1)) {//计算绝对值在某一区间内文字显示高亮
                         mPaintText.setColor(textSelectColor);
 
                     }
@@ -166,7 +166,7 @@ public class SelectView extends View {
                 } else {
                     y = y + y * 2 / 3;
                 }
-                if (isCanvasLine) {
+                if (isCanvasLine) {//画短刻度线
                     canvas.drawLine(x, getMeasuredHeight() - mPadding, x, y, mPaint);
 
                 }
@@ -201,7 +201,7 @@ public class SelectView extends View {
                 break;
             case MotionEvent.ACTION_MOVE:
                 isActionUp = false;
-                mPointXoff = xPosition - mLastX;
+                mPointXoff = xPosition - mLastX;//计算滑动距离
                 mPointX = mPointX + mPointXoff;
                 postInvalidate();
 
@@ -209,7 +209,7 @@ public class SelectView extends View {
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 isActionUp = true;
-                countVelocityTracker(event);
+                countVelocityTracker(event);//控制快速滑动
                 startAnim();
 //                startAnim = true;
                 return false;
@@ -227,10 +227,10 @@ public class SelectView extends View {
 
         if (scroller.computeScrollOffset()) {
             float mPointXoff = (scroller.getFinalX() - scroller.getCurrX());
-            mPointX = mPointX + mPointXoff;//*functionSpeed();
+            mPointX = mPointX + mPointXoff*functionSpeed();
             float absmPointX = Math.abs(mPointX);
             float mmPointX = (mMaxValue - mMinValue) * mUnit / 2;
-            if (absmPointX < mmPointX) {
+            if (absmPointX < mmPointX) {//在视图范围内
                 startAnim();
             }
 
@@ -248,7 +248,7 @@ public class SelectView extends View {
     }
 
     private void countVelocityTracker(MotionEvent event) {
-        velocityTracker.computeCurrentVelocity(1000, 1200);
+        velocityTracker.computeCurrentVelocity(800, 800);
         float xVelocity = velocityTracker.getXVelocity();
         if (Math.abs(xVelocity) > minvelocity) {
             scroller.fling(0, 0, (int) xVelocity, 0, Integer.MIN_VALUE,
@@ -289,7 +289,7 @@ public class SelectView extends View {
             super.applyTransformation(interpolatedTime, t);
 
 
-            mPointX = fromX + (desX - fromX) * interpolatedTime;
+            mPointX = fromX + (desX - fromX) * interpolatedTime;//计算动画每贞滑动的距离
 
             invalidate();
 
@@ -301,16 +301,16 @@ public class SelectView extends View {
     private void startAnim() {
         float absmPointX = Math.abs(mPointX);
         float mmPointX = (mMaxValue - mMinValue) * mUnit / 2;
-        if (absmPointX > mmPointX) {
-            if (mPointX > 0) {
+        if (absmPointX > mmPointX) {//超出视图范围
+            if (mPointX > 0) {//最左
                 moveToX(mMiddleValue - mMinValue, 300);
-            } else {
+            } else {//最右
                 moveToX(mMiddleValue - mMaxValue, 300);
             }
 
 
         } else {
-            int space = (int) (Math.rint(mPointX / mUnit));
+            int space = (int) (Math.rint(mPointX / mUnit));//四舍五入计算出往左还是往右滑动
             moveToX(space, 200);
 
         }

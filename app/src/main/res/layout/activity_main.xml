@@ -40,7 +40,7 @@
         sv:isCanvasLine="false"
         sv:textSize="14dp"
         sv:unitLongLine="1"
-        sv:unitSize="60dp"/>
+        sv:unitSize="40dp"/>
 
     <TextView
         android:layout_width="match_parent"
